@@ -1,0 +1,31 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: db_mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: supersenha
+    volumes: 
+      - ./tmp_data/mongodb_data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - user-bridge
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.13-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=supersenha
+    networks:
+      - user-bridge
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./tmp_data/rabbitmq_data:/var/lib/rabbitmq
+
+networks:
+  user-bridge:
+    external: true
